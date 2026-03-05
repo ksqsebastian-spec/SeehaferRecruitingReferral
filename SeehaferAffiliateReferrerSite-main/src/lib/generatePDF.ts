@@ -19,7 +19,7 @@ export async function generatePDF(data: ReferralData): Promise<void> {
   y += 6;
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text("Empfehlungsprogramm", pageWidth / 2, y, { align: "center" });
+  doc.text("Fachkraefte-Empfehlung", pageWidth / 2, y, { align: "center" });
   y += 15;
 
   // Separator
@@ -34,33 +34,23 @@ export async function generatePDF(data: ReferralData): Promise<void> {
   y += 8;
   doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text("Dieser Auftrag wurde", margin, y);
+  doc.text("Empfohlen von:", margin, y);
   y += 6;
-  doc.text("empfohlen von:", margin, y);
-  y += 8;
   doc.setFont("helvetica", "bold");
   doc.text(data.name, margin, y);
   y += 6;
   doc.setFont("helvetica", "normal");
   doc.text(data.email, margin, y);
   y += 6;
-
-  // Bank details if no PayPal
-  if (data.noPaypal && data.kontoinhaber) {
-    y += 4;
-    doc.setFontSize(9);
-    doc.setFont("helvetica", "bold");
-    doc.text("Bankverbindung:", margin, y);
-    y += 5;
-    doc.setFont("helvetica", "normal");
-    doc.text(`Kontoinhaber: ${data.kontoinhaber}`, margin, y);
-    y += 5;
-    doc.text(`IBAN: ${data.iban || ""}`, margin, y);
-    y += 6;
-    doc.setFontSize(10);
-  }
-
   doc.text(`Ref: ${data.refCode}`, margin, y);
+  y += 10;
+
+  // Candidate
+  doc.setFont("helvetica", "bold");
+  doc.text("Empfohlene Person:", margin, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.text(data.candidateName, margin, y);
   y += 10;
 
   // Separator
@@ -73,20 +63,22 @@ export async function generatePDF(data: ReferralData): Promise<void> {
   doc.text("Anleitung:", margin, y);
   y += 6;
   doc.setFont("helvetica", "normal");
-  doc.text("Den Block oben kopieren und in die", margin, y);
+  doc.text("Kopiere den Block oben in deine", margin, y);
   y += 5;
-  doc.text("Anfrage-Mail an info@seehafer-elemente.de einfuegen.", margin, y);
+  doc.text("Bewerbungsmail an info@seehafer-elemente.de", margin, y);
+  y += 10;
+
+  doc.setFont("helvetica", "bold");
+  doc.text("Offene Stellen:", margin, y);
+  y += 6;
+  doc.setFont("helvetica", "normal");
+  doc.text("seehafer-elemente.de/karriere", margin, y);
   y += 12;
 
   // Footer
   doc.line(margin, y, pageWidth - margin, y);
-  y += 8;
-  doc.setFontSize(8);
-  doc.text("empfehlen.seehafer-elemente.de", pageWidth / 2, y, {
-    align: "center",
-  });
 
   // Download
-  const filename = `empfehlung-seehafer-${data.refCode.replace("#", "")}.pdf`;
+  const filename = `empfehlung-seehafer-recruiting-${data.refCode.replace("#", "")}.pdf`;
   doc.save(filename);
 }

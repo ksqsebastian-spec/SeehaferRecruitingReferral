@@ -8,7 +8,7 @@ export default function Header() {
         SEEHAFER ELEMENTE
       </p>
       <p className="text-text-muted" style={{ fontSize: "13px" }}>
-        Empfehlungsprogramm
+        Fachkräfte-Empfehlung
       </p>
     </header>
   );

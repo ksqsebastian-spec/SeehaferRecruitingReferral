@@ -4,13 +4,13 @@ import { generateRefCode } from "../generateRefCode";
 describe("generateRefCode", () => {
   it("returns a string matching the expected format", () => {
     const code = generateRefCode();
-    expect(code).toMatch(/^#SEE-\d{4}-\d{4}$/);
+    expect(code).toMatch(/^#SEE-REC-\d{4}-\d{4}$/);
   });
 
   it("includes the current year", () => {
     const code = generateRefCode();
     const year = new Date().getFullYear();
-    expect(code).toContain(`#SEE-${year}-`);
+    expect(code).toContain(`#SEE-REC-${year}-`);
   });
 
   it("generates a 4-digit random number between 1000 and 9999", () => {

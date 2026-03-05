@@ -4,17 +4,16 @@ import { validateForm } from "../../types";
 const base = {
   name: "",
   email: "",
-  noPaypal: false,
-  iban: "",
-  kontoinhaber: "",
+  candidateName: "",
 };
 
 describe("validateForm", () => {
-  it("accepts valid name and email", () => {
+  it("accepts valid name, email, and candidateName", () => {
     const errors = validateForm({
       ...base,
       name: "Lisa Schmidt",
       email: "lisa@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(Object.keys(errors)).toHaveLength(0);
   });
@@ -24,15 +23,7 @@ describe("validateForm", () => {
       ...base,
       name: "Müller-Straße Öztürk",
       email: "test@test.de",
-    });
-    expect(Object.keys(errors)).toHaveLength(0);
-  });
-
-  it("accepts names with accented characters", () => {
-    const errors = validateForm({
-      ...base,
-      name: "René Bélanger",
-      email: "test@test.de",
+      candidateName: "René Bélanger",
     });
     expect(Object.keys(errors)).toHaveLength(0);
   });
@@ -42,6 +33,7 @@ describe("validateForm", () => {
       ...base,
       name: "Lisa123",
       email: "lisa@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(errors.name).toBeDefined();
   });
@@ -51,6 +43,7 @@ describe("validateForm", () => {
       ...base,
       name: "Lisa@Schmidt",
       email: "lisa@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(errors.name).toBeDefined();
   });
@@ -60,6 +53,7 @@ describe("validateForm", () => {
       ...base,
       name: "A".repeat(81),
       email: "lisa@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(errors.name).toBeDefined();
   });
@@ -69,6 +63,7 @@ describe("validateForm", () => {
       ...base,
       name: "",
       email: "lisa@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(errors.name).toBeDefined();
   });
@@ -78,6 +73,7 @@ describe("validateForm", () => {
       ...base,
       name: "Lisa",
       email: "not-an-email",
+      candidateName: "Tim Wagner",
     });
     expect(errors.email).toBeDefined();
   });
@@ -87,6 +83,7 @@ describe("validateForm", () => {
       ...base,
       name: "Lisa",
       email: "a".repeat(110) + "@example.com",
+      candidateName: "Tim Wagner",
     });
     expect(errors.email).toBeDefined();
   });
@@ -96,66 +93,38 @@ describe("validateForm", () => {
       ...base,
       name: "Lisa",
       email: "",
+      candidateName: "Tim Wagner",
     });
     expect(errors.email).toBeDefined();
   });
 
-  // Bank details tests
-  it("accepts noPaypal=false without bank details", () => {
+  it("rejects empty candidateName", () => {
     const errors = validateForm({
       ...base,
       name: "Lisa",
       email: "lisa@example.com",
-      noPaypal: false,
+      candidateName: "",
     });
-    expect(Object.keys(errors)).toHaveLength(0);
+    expect(errors.candidateName).toBeDefined();
   });
 
-  it("accepts noPaypal=true with valid IBAN and Kontoinhaber", () => {
+  it("rejects candidateName with numbers", () => {
     const errors = validateForm({
       ...base,
       name: "Lisa",
       email: "lisa@example.com",
-      noPaypal: true,
-      iban: "DE89370400440532013000",
-      kontoinhaber: "Lisa Schmidt",
+      candidateName: "Tim123",
     });
-    expect(Object.keys(errors)).toHaveLength(0);
+    expect(errors.candidateName).toBeDefined();
   });
 
-  it("rejects noPaypal=true without IBAN", () => {
+  it("rejects candidateName exceeding 80 characters", () => {
     const errors = validateForm({
       ...base,
       name: "Lisa",
       email: "lisa@example.com",
-      noPaypal: true,
-      iban: "",
-      kontoinhaber: "Lisa Schmidt",
+      candidateName: "A".repeat(81),
     });
-    expect(errors.iban).toBeDefined();
-  });
-
-  it("rejects noPaypal=true without Kontoinhaber", () => {
-    const errors = validateForm({
-      ...base,
-      name: "Lisa",
-      email: "lisa@example.com",
-      noPaypal: true,
-      iban: "DE89370400440532013000",
-      kontoinhaber: "",
-    });
-    expect(errors.kontoinhaber).toBeDefined();
-  });
-
-  it("rejects invalid IBAN format", () => {
-    const errors = validateForm({
-      ...base,
-      name: "Lisa",
-      email: "lisa@example.com",
-      noPaypal: true,
-      iban: "INVALID",
-      kontoinhaber: "Lisa Schmidt",
-    });
-    expect(errors.iban).toBeDefined();
+    expect(errors.candidateName).toBeDefined();
   });
 });

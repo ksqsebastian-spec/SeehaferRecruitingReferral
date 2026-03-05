@@ -4,8 +4,8 @@ import { generateMailtoLink } from "../generateMailtoLink";
 const sampleData = {
   name: "Lisa Schmidt",
   email: "lisa@example.com",
-  refCode: "#SEE-2026-1234",
-  noPaypal: false,
+  candidateName: "Tim Wagner",
+  refCode: "#SEE-REC-2026-1234",
 };
 
 describe("generateMailtoLink", () => {
@@ -17,7 +17,8 @@ describe("generateMailtoLink", () => {
   it("includes the encoded subject", () => {
     const link = generateMailtoLink(sampleData);
     expect(link).toContain(
-      "subject=" + encodeURIComponent("Empfehlung – Seehafer Elemente")
+      "subject=" +
+        encodeURIComponent("Empfehlung – Seehafer Elemente Fachkräfte"),
     );
   });
 
@@ -33,36 +34,29 @@ describe("generateMailtoLink", () => {
 
   it("includes the ref code in the body", () => {
     const link = generateMailtoLink(sampleData);
-    expect(link).toContain(encodeURIComponent("#SEE-2026-1234"));
+    expect(link).toContain(encodeURIComponent("#SEE-REC-2026-1234"));
+  });
+
+  it("includes the candidate name in the body", () => {
+    const link = generateMailtoLink(sampleData);
+    expect(link).toContain(encodeURIComponent("Tim Wagner"));
   });
 
   it("properly URL-encodes special characters", () => {
     const link = generateMailtoLink({
       name: "Müller-Öß",
       email: "test@test.de",
-      refCode: "#SEE-2026-0001",
-      noPaypal: false,
+      candidateName: "René Bélanger",
+      refCode: "#SEE-REC-2026-0001",
     });
     expect(link).not.toContain(" ");
     expect(link).toContain(encodeURIComponent("Müller-Öß"));
   });
 
-  it("includes bank details when noPaypal is true", () => {
-    const link = generateMailtoLink({
-      name: "Lisa Schmidt",
-      email: "lisa@example.com",
-      refCode: "#SEE-2026-1234",
-      noPaypal: true,
-      kontoinhaber: "Lisa Schmidt",
-      iban: "DE89370400440532013000",
-    });
-    expect(link).toContain(encodeURIComponent("Bankverbindung:"));
-    expect(link).toContain(encodeURIComponent("IBAN: DE89370400440532013000"));
-    expect(link).toContain(encodeURIComponent("Kontoinhaber: Lisa Schmidt"));
-  });
-
-  it("does not include bank details when noPaypal is false", () => {
+  it("includes karriere link in the body", () => {
     const link = generateMailtoLink(sampleData);
-    expect(link).not.toContain(encodeURIComponent("Bankverbindung:"));
+    expect(link).toContain(
+      encodeURIComponent("https://seehafer-elemente.de/karriere"),
+    );
   });
 });

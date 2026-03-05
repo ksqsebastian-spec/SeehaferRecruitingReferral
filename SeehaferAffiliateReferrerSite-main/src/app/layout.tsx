@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Empfehlungsprogramm | Seehafer Elemente",
+  title: "Fachkräfte-Empfehlung | Seehafer Elemente",
   description:
-    "Empfiehl Seehafer Elemente weiter und verdiene eine Provision bei jedem Auftrag.",
+    "Empfiehl potenzielle Mitarbeiter an Seehafer Elemente und verdiene 1.000 € Prämie nach bestandener Probezeit.",
   robots: "noindex, nofollow",
 };
 
