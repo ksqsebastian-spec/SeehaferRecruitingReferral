@@ -3,6 +3,10 @@
 import { useState } from "react";
 import { validateForm, type ReferralFormData } from "@/types";
 import { generateRefCode } from "@/lib/generateRefCode";
+import {
+  generateMailtoLink,
+  generateGmailLink,
+} from "@/lib/generateMailtoLink";
 import { generatePDF } from "@/lib/generatePDF";
 import { getReferralBlockText } from "@/lib/referralBlock";
 
@@ -148,13 +152,13 @@ export default function ReferralForm() {
           )}
 
           {/* Action buttons */}
-          <div className="flex gap-2.5">
+          <div className="flex flex-col gap-2.5">
             {/* Copy to clipboard */}
             <button
               type="button"
               onClick={handleCopy}
               disabled={!isReady}
-              className={`inline-flex flex-1 items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white transition-all ${
+              className={`inline-flex w-full items-center justify-center gap-2 rounded-lg px-5 py-3 text-sm font-semibold text-white transition-all ${
                 !isReady
                   ? "cursor-not-allowed bg-orange-300 opacity-50"
                   : copied
@@ -162,27 +166,53 @@ export default function ReferralForm() {
                     : "bg-orange-500 hover:-translate-y-px hover:bg-orange-600 hover:shadow-md"
               }`}
             >
-              {copied ? "✓ Kopiert!" : "📋 Text kopieren"}
+              {copied ? "Kopiert!" : "In Zwischenablage kopieren"}
             </button>
 
-            {/* PDF */}
-            <button
-              type="button"
-              onClick={() => generatePDF(referralData)}
-              disabled={!isReady}
-              className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-3 text-sm font-semibold text-gray-800 transition-all ${
-                isReady
-                  ? "hover:-translate-y-px hover:shadow-md"
-                  : "pointer-events-none opacity-50"
-              }`}
-            >
-              📄 Als PDF herunterladen
-            </button>
+            {/* Mail + Gmail + PDF row */}
+            <div className="flex gap-2.5">
+              <a
+                href={isReady ? generateMailtoLink(referralData) : undefined}
+                className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-xs font-semibold text-gray-800 transition-all ${
+                  isReady
+                    ? "hover:-translate-y-px hover:shadow-md"
+                    : "pointer-events-none opacity-50"
+                }`}
+                aria-disabled={!isReady}
+              >
+                E-Mail
+              </a>
+              <a
+                href={isReady ? generateGmailLink(referralData) : undefined}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-xs font-semibold text-gray-800 transition-all ${
+                  isReady
+                    ? "hover:-translate-y-px hover:shadow-md"
+                    : "pointer-events-none opacity-50"
+                }`}
+                aria-disabled={!isReady}
+              >
+                Gmail
+              </a>
+              <button
+                type="button"
+                onClick={() => generatePDF(referralData)}
+                disabled={!isReady}
+                className={`inline-flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2.5 text-xs font-semibold text-gray-800 transition-all ${
+                  isReady
+                    ? "hover:-translate-y-px hover:shadow-md"
+                    : "pointer-events-none opacity-50"
+                }`}
+              >
+                PDF
+              </button>
+            </div>
           </div>
 
           {/* Privacy note */}
           <p className="flex items-center gap-1.5 text-xs text-gray-500">
-            🔒 Deine Daten werden nur für die Prämien-Auszahlung verwendet.
+            Daten werden nur zur Prämien-Auszahlung verwendet.
           </p>
         </div>
       </div>
