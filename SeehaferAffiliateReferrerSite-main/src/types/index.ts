@@ -1,9 +1,7 @@
 export interface ReferralFormData {
   name: string;
   email: string;
-  noPaypal: boolean;
-  iban: string;
-  kontoinhaber: string;
+  candidateName: string;
 }
 
 export interface ReferralData extends ReferralFormData {
@@ -12,13 +10,11 @@ export interface ReferralData extends ReferralFormData {
 
 const nameRegex = /^[a-zA-ZäöüÄÖÜßéèêàáâ\s\-]+$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const ibanRegex = /^[A-Z]{2}\d{2}[A-Z0-9]{4}\d{7}([A-Z0-9]?){0,16}$/;
 
 export interface ValidationErrors {
   name?: string;
   email?: string;
-  iban?: string;
-  kontoinhaber?: string;
+  candidateName?: string;
 }
 
 export function validateForm(data: ReferralFormData): ValidationErrors {
@@ -42,20 +38,14 @@ export function validateForm(data: ReferralFormData): ValidationErrors {
     errors.email = "Bitte gib eine gültige E-Mail-Adresse ein.";
   }
 
-  // Bank details (only when noPaypal is checked)
-  if (data.noPaypal) {
-    if (!data.kontoinhaber) {
-      errors.kontoinhaber = "Bitte gib den Kontoinhaber ein.";
-    } else if (!nameRegex.test(data.kontoinhaber)) {
-      errors.kontoinhaber =
-        "Nur Buchstaben, Leerzeichen und Bindestriche erlaubt.";
-    }
-
-    if (!data.iban) {
-      errors.iban = "Bitte gib deine IBAN ein.";
-    } else if (!ibanRegex.test(data.iban.replace(/\s/g, "").toUpperCase())) {
-      errors.iban = "Bitte gib eine gültige IBAN ein.";
-    }
+  // Candidate name
+  if (!data.candidateName) {
+    errors.candidateName = "Bitte gib den Namen der empfohlenen Person ein.";
+  } else if (data.candidateName.length > 80) {
+    errors.candidateName = "Name darf maximal 80 Zeichen haben.";
+  } else if (!nameRegex.test(data.candidateName)) {
+    errors.candidateName =
+      "Nur Buchstaben, Leerzeichen und Bindestriche erlaubt.";
   }
 
   return errors;

@@ -1,26 +1,20 @@
 const steps = [
   {
     num: 1,
-    title: "Formular ausfullen",
-    desc: "Name und PayPal-Adresse (oder Bankverbindung) eingeben.",
+    title: "Ausfüllen",
+    desc: "Deine Daten und den Namen der Person eingeben, die du empfiehlst.",
     highlight: false,
   },
   {
     num: 2,
-    title: "Empfehlungsblock weitergeben",
-    desc: "Per E-Mail, Gmail, Zwischenablage oder PDF — an die Person, die Tischlerarbeiten braucht.",
+    title: "Weiterleiten",
+    desc: "Den Empfehlungs-Text an den Kandidaten schicken — per WhatsApp, SMS oder E-Mail.",
     highlight: false,
   },
   {
     num: 3,
-    title: "Auftrag kommt zustande",
-    desc: "Die Person schickt eine Anfrage an Seehafer Elemente und fugt den Empfehlungsblock bei.",
-    highlight: false,
-  },
-  {
-    num: 4,
-    title: "Provision erhalten",
-    desc: "Wenn ein Auftrag daraus entsteht, bekommst du deine Provision auf PayPal oder per Uberweisung.",
+    title: "Prämie kassieren",
+    desc: "1.000 € nach bestandener Probezeit der empfohlenen Person.",
     highlight: true,
   },
 ];
