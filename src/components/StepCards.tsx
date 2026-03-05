@@ -8,7 +8,7 @@ const steps = [
   {
     num: 2,
     title: "Weiterleiten",
-    desc: "Den Empfehlungs-Text an den Kandidaten schicken — per WhatsApp, SMS oder E-Mail.",
+    desc: "Den Empfehlungs-Text weiterleiten — per WhatsApp, SMS oder E-Mail.",
     highlight: false,
   },
   {
