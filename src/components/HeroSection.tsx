@@ -5,7 +5,7 @@ export default function HeroSection() {
         className="text-navy font-extrabold"
         style={{ fontSize: "clamp(28px, 5vw, 42px)", lineHeight: 1.15 }}
       >
-        Kenn jemanden, der anpackt?
+        Kennst du jemanden, der richtig gut ist?
         <br />
         <span className="text-orange">
           Sag Bescheid — und verdien 1.000 €.
